@@ -1,0 +1,24 @@
+services:
+  movie-database:
+    image: postgres:16
+    container_name: movie-db
+    environment:
+      POSTGRES_DB: movie_db
+      POSTGRES_USER: movie_service
+      POSTGRES_PASSWORD: movie_service
+      TZ: Asia/Phnom_Penh
+    ports:
+      - "5438:5432"
+    volumes:
+      - movieservice_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U movie_service -d movie_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+#    networks:
+#      - heng-dev-net
+
+volumes:
+  movieservice_pg_data:

@@ -1,0 +1,22 @@
+services:
+  booking-database:
+    image: postgres:16
+    container_name: booking-db
+    environment:
+      POSTGRES_DB: booking_db
+      POSTGRES_USER: booking_service
+      POSTGRES_PASSWORD: booking_service
+      TZ: Asia/Phnom_Penh
+    ports:
+      - "5441:5432"
+    volumes:
+      -  bookingservice_pg_data:/var/lib/posgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U booking_service -d booking_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+volumes:
+  bookingservice_pg_data:

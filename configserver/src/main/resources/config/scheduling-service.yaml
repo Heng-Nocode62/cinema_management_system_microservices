@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5440/scheduling_db
+    username: scheduling_service
+    password: scheduling_service
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      show-sql: false
+      ddl-auto: update
+  properties:
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9090/realms/cinema-system
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 8083
+
+services:
+  movie-url: http://movie-service
+  cinema-url: http://cinema-service
+  payment-url: http://payment-serivce

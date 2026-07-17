@@ -1,0 +1,67 @@
+spring:
+  application:
+    name: payment-service
+  cloud:
+    config:
+      enabled: false
+  datasource:
+    url: jdbc:postgresql://localhost:5443/payment_db
+    username: payment_service
+    password: payment_service
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9090/realms/cinema-system
+  flyway:
+    enable: false
+    location: classpath:db/migration
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: payment-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.heng.cms.*"
+bakong:
+  base-url: https://api-bakong.nbc.gov.kh
+  token: ${BAKONG_TOKEN}
+  merchant-id: heng_vath@bkrt
+  merchant-name: Heng Vath
+  merchant-city: Phnom Penh
+  store-label: CinemaHub Tickets
+  terminal-label: POS-01
+  qr-expiry-minutes: 10
+  poll-inverval-second: 3
+
+khqrpay:
+  base-url: https://khqr.cc/
+  profile-id: ${KH_PROFILE_ID}
+  api-key:  ${API_KEY}
+  success-url: https://boondocks-spoon-fragrant.ngrok-free.dev/api/payments/khqrpay/callback
+  cancel-url: https://boondocks-spoon-fragrant.ngrok-free.dev/api/payments/khqrpay/cancel
+  webhook-secret: ${API_KEY}
+
+payment:
+  gateway: khqrpay
+
+kafka:
+  topics:
+    payment-confirmed: payment.confirmed
+    payment-failed: payment.failed
+    booking-created: booking.created
+
+
+
+
+server:
+  port: 8085

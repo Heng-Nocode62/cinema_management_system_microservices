@@ -1,0 +1,22 @@
+services:
+  scheduling-service:
+    image: postgres:16
+    container_name: scheduling-database
+    environment:
+      POSTGRES_DB: scheduling_db
+      POSTGRES_USER: scheduling_service
+      POSTGRES_PASSWORD: scheduling_service
+      TZ: Asia/Phnom_Penh
+    ports:
+      - "5440:5432"
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U scheduling_service -d scheduling_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - schedulingservice_pg_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  schedulingservice_pg_data:

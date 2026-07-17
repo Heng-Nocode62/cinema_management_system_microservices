@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5437/user_db
+    username: user_service
+    password: user_service
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9090/realms/cinema-system
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 3s
+otp:
+  expire-minutes: 5
+  resend-after-seconds: 60
+  max-attempts: 5
+
+keycloak:
+  base-url: http://localhost:9090
+  realm: cinema-system
+  admin:
+    client-id: user-service
+    client-secret: 1ctVuExLmEKsjXURSsrzglE2E7ucSpYf
+  client:
+    client-id: user-login
+    client-secret: mcqaGpKgIUexkf594an2gnuz4jWTpeKK
+
+server:
+  port: 8080
+
+registration-session:
+  expire-minutes: 3

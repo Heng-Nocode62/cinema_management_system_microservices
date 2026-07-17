@@ -1,0 +1,22 @@
+services:
+  cinema-database:
+    image: postgres:16
+    container_name: cinema-db
+    environment:
+      POSTGRES_DB: cinema_db
+      POSTGRES_USER: cinema_service
+      POSTGRES_PASSWORD: cinema_service
+      TZ: Asia/Phnom_Penh
+    ports:
+      - "5439:5432"
+    volumes:
+      - cinemaservice_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL","pg-isready -U cinema_service -d cinema_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+volumes:
+  cinemaservice_pg_data:

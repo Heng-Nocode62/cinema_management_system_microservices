@@ -1,0 +1,22 @@
+services:
+  concession-db:
+    image: postgres:16
+    container_name: concession-db
+    environment:
+      POSTGRES_DB: concession_db
+      POSTGRES_USER: concession_service
+      POSTGRES_PASSWORD: concession_service
+      TZ: Asia/Phnom_Penh
+    ports:
+      - "5442:5432"
+    volumes:
+      - concessionservice_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL","pg-isready -U cinema_service -d cinema_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+volumes:
+  concessionservice_pg_data:
